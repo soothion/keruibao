@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>layuiAdmin std - 通用后台管理模板系统（iframe标准版）</title>
+    <title>科睿宝科技后台管理系统</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -62,6 +62,17 @@
                     <a href="javascript:;" layadmin-event="fullscreen">
                         <i class="layui-icon layui-icon-screen-full"></i>
                     </a>
+                </li>
+                <li class="layui-nav-item" lay-unselect>
+                    <a href="javascript:;">
+                        <cite>用户中心</cite>
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd><a>基本资料</a></dd>
+                        <dd><a>修改密码</a></dd>
+                        <hr>
+                        <dd  style="text-align: center;"><a href="{{route('admin.logout')}}">退出</a></dd>
+                    </dl>
                 </li>
             </ul>
         </div>
