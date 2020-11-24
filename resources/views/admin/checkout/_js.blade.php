@@ -37,8 +37,14 @@
     }
 </style>
 <script>
-    layui.use(['upload'],function () {
+    layui.use(['upload', 'laydate'],function () {
         var upload = layui.upload
+        var laydate = layui.laydate;
+  
+        //执行一个laydate实例
+        laydate.render({
+          elem: '#date' //指定元素
+        });
 
         //普通图片上传
         var uploadInst = upload.render({
@@ -67,11 +73,4 @@
             }
         });
     })
-</script>
-<!-- 实例化编辑器 -->
-<script type="text/javascript">
-    var ue = UE.getEditor('container');
-    ue.ready(function() {
-        ue.execCommand('serverparam', '_token', '{{ csrf_token() }}');//此处为支持laravel5 csrf ,根据实际情况修改,目的就是设置 _token 值.
-    });
 </script>

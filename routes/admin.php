@@ -100,48 +100,88 @@ Route::group(['namespace'=>'Admin','prefix'=>'admin','middleware'=>['auth','perm
 });
 
 
-//资讯管理
-Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['auth', 'permission:zixun.manage']], function () {
-    //分类管理
-    Route::group(['middleware' => 'permission:zixun.category'], function () {
-        Route::get('category/data', 'CategoryController@data')->name('admin.category.data');
-        Route::get('category', 'CategoryController@index')->name('admin.category');
-        //添加分类
-        Route::get('category/create', 'CategoryController@create')->name('admin.category.create')->middleware('permission:zixun.category.create');
-        Route::post('category/store', 'CategoryController@store')->name('admin.category.store')->middleware('permission:zixun.category.create');
-        //编辑分类
-        Route::get('category/{id}/edit', 'CategoryController@edit')->name('admin.category.edit')->middleware('permission:zixun.category.edit');
-        Route::put('category/{id}/update', 'CategoryController@update')->name('admin.category.update')->middleware('permission:zixun.category.edit');
-        //删除分类
-        Route::delete('category/destroy', 'CategoryController@destroy')->name('admin.category.destroy')->middleware('permission:zixun.category.destroy');
-    });
-    //文章管理
-    Route::group(['middleware' => 'permission:zixun.article'], function () {
-        Route::get('article/data', 'ArticleController@data')->name('admin.article.data');
-        Route::get('article', 'ArticleController@index')->name('admin.article');
+//生产管理
+Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['auth', 'permission:produce.manage']], function () {
+    //产品管理
+    Route::group(['middleware' => 'permission:produce.product'], function () {
+        Route::get('product/data', 'ProductController@data')->name('admin.product.data');
+        Route::get('product', 'ProductController@index')->name('admin.product');
         //添加
-        Route::get('article/create', 'ArticleController@create')->name('admin.article.create')->middleware('permission:zixun.article.create');
-        Route::post('article/store', 'ArticleController@store')->name('admin.article.store')->middleware('permission:zixun.article.create');
+        Route::get('product/create', 'ProductController@create')->name('admin.product.create')->middleware('permission:produce.product.create');
+        Route::post('product/store', 'ProductController@store')->name('admin.product.store')->middleware('permission:produce.product.create');
         //编辑
-        Route::get('article/{id}/edit', 'ArticleController@edit')->name('admin.article.edit')->middleware('permission:zixun.article.edit');
-        Route::put('article/{id}/update', 'ArticleController@update')->name('admin.article.update')->middleware('permission:zixun.article.edit');
+        Route::get('product/{id}/edit', 'ProductController@edit')->name('admin.product.edit')->middleware('permission:produce.product.edit');
+        Route::put('product/{id}/update', 'ProductController@update')->name('admin.product.update')->middleware('permission:produce.product.edit');
         //删除
-        Route::delete('article/destroy', 'ArticleController@destroy')->name('admin.article.destroy')->middleware('permission:zixun.article.destroy');
+        Route::delete('product/destroy', 'ProductController@destroy')->name('admin.product.destroy')->middleware('permission:produce.product.destroy');
     });
-    //标签管理
-    Route::group(['middleware' => 'permission:zixun.tag'], function () {
-        Route::get('tag/data', 'TagController@data')->name('admin.tag.data');
-        Route::get('tag', 'TagController@index')->name('admin.tag');
+
+    //批次管理
+    Route::group(['middleware' => 'permission:produce.batch'], function () {
+        Route::get('batch/data', 'BatchController@data')->name('admin.batch.data');
+        Route::get('batch', 'BatchController@index')->name('admin.batch');
         //添加
-        Route::get('tag/create', 'TagController@create')->name('admin.tag.create')->middleware('permission:zixun.tag.create');
-        Route::post('tag/store', 'TagController@store')->name('admin.tag.store')->middleware('permission:zixun.tag.create');
+        Route::get('batch/create', 'BatchController@create')->name('admin.batch.create')->middleware('permission:produce.batch.create');
+        Route::post('batch/store', 'BatchController@store')->name('admin.batch.store')->middleware('permission:produce.batch.create');
         //编辑
-        Route::get('tag/{id}/edit', 'TagController@edit')->name('admin.tag.edit')->middleware('permission:zixun.tag.edit');
-        Route::put('tag/{id}/update', 'TagController@update')->name('admin.tag.update')->middleware('permission:zixun.tag.edit');
+        Route::get('batch/{id}/edit', 'BatchController@edit')->name('admin.batch.edit')->middleware('permission:produce.batch.edit');
+        Route::put('batch/{id}/update', 'BatchController@update')->name('admin.batch.update')->middleware('permission:produce.batch.edit');
         //删除
-        Route::delete('tag/destroy', 'TagController@destroy')->name('admin.tag.destroy')->middleware('permission:zixun.tag.destroy');
+        Route::delete('batch/destroy', 'BatchController@destroy')->name('admin.batch.destroy')->middleware('permission:produce.batch.destroy');
     });
+
+
+    //出库管理
+    Route::group(['middleware' => 'permission:produce.checkout'], function () {
+        Route::get('checkout/data', 'CheckoutController@data')->name('admin.checkout.data');
+        Route::get('checkout', 'CheckoutController@index')->name('admin.checkout');
+        //添加
+        Route::get('checkout/create', 'CheckoutController@create')->name('admin.checkout.create')->middleware('permission:produce.checkout.create');
+        Route::post('checkout/store', 'CheckoutController@store')->name('admin.checkout.store')->middleware('permission:produce.checkout.create');
+        //编辑
+        Route::get('checkout/{id}/edit', 'CheckoutController@edit')->name('admin.checkout.edit')->middleware('permission:produce.checkout.edit');
+        Route::put('checkout/{id}/update', 'CheckoutController@update')->name('admin.checkout.update')->middleware('permission:produce.checkout.edit');
+        //删除
+        Route::delete('checkout/destroy', 'CheckoutController@destroy')->name('admin.checkout.destroy')->middleware('permission:produce.checkout.destroy');
+    });
+
+     //物料管理
+    Route::group(['middleware' => 'permission:produce.material'], function () {
+        Route::get('material/data', 'MaterialController@data')->name('admin.material.data');
+        Route::get('material', 'MaterialController@index')->name('admin.material');
+        //添加
+        Route::get('material/create', 'MaterialController@create')->name('admin.material.create')->middleware('permission:produce.material.create');
+        Route::post('material/store', 'MaterialController@store')->name('admin.material.store')->middleware('permission:produce.material.create');
+        //编辑
+        Route::get('material/{id}/edit', 'MaterialController@edit')->name('admin.material.edit')->middleware('permission:produce.material.edit');
+        Route::put('material/{id}/update', 'MaterialController@update')->name('admin.material.update')->middleware('permission:produce.material.edit');
+        //删除
+        Route::delete('material/destroy', 'MaterialController@destroy')->name('admin.material.destroy')->middleware('permission:produce.material.destroy');
+    });
+    
 });
+
+
+//财务管理
+Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['auth', 'permission:finance.manage']], function () {
+    //流水管理
+    Route::group(['middleware' => 'permission:finance.water'], function () {
+        Route::get('water/data', 'WaterController@data')->name('admin.water.data');
+        Route::get('water', 'WaterController@index')->name('admin.water');
+        //添加
+        Route::get('water/create', 'WaterController@create')->name('admin.water.create')->middleware('permission:finance.water.create');
+        Route::post('water/store', 'WaterController@store')->name('admin.water.store')->middleware('permission:finance.water.create');
+        //编辑
+        Route::get('water/{id}/edit', 'WaterController@edit')->name('admin.water.edit')->middleware('permission:finance.water.edit');
+        Route::put('water/{id}/update', 'WaterController@update')->name('admin.water.update')->middleware('permission:finance.water.edit');
+        //删除
+        Route::delete('water/destroy', 'WaterController@destroy')->name('admin.water.destroy')->middleware('permission:finance.water.destroy');
+        //入帐
+        Route::put('water/check', 'WaterController@check')->name('admin.water.check')->middleware('permission:finance.water.edit');
+    });
+    
+});
+
 //配置管理
 Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['auth', 'permission:config.manage']], function () {
     //站点配置

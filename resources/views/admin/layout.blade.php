@@ -63,24 +63,6 @@
                         <i class="layui-icon layui-icon-screen-full"></i>
                     </a>
                 </li>
-                <li class="layui-nav-item" lay-unselect>
-                    <a href="javascript:;">
-                        <cite>贤心</cite>
-                    </a>
-                    <dl class="layui-nav-child">
-                        <dd><a lay-href="set/user/info.html">基本资料</a></dd>
-                        <dd><a lay-href="set/user/password.html">修改密码</a></dd>
-                        <hr>
-                        <dd  style="text-align: center;"><a href="{{route('admin.logout')}}">退出</a></dd>
-                    </dl>
-                </li>
-
-                <li class="layui-nav-item layui-hide-xs" lay-unselect>
-                    <a href="javascript:;" layadmin-event="about"><i class="layui-icon layui-icon-more-vertical"></i></a>
-                </li>
-                <li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm" lay-unselect>
-                    <a href="javascript:;" layadmin-event="more"><i class="layui-icon layui-icon-more-vertical"></i></a>
-                </li>
             </ul>
         </div>
 
@@ -88,7 +70,7 @@
         <div class="layui-side layui-side-menu">
             <div class="layui-side-scroll">
                 <div class="layui-logo" lay-href="{{route('admin.index')}}">
-                    <span>laravel5.5</span>
+                    <span>科睿宝科技</span>
                 </div>
 
                 <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
@@ -112,10 +94,14 @@
                     @foreach($menus as $menu)
                         @can($menu->name)
                         <li data-name="{{$menu->name}}" class="layui-nav-item">
-                            <a href="javascript:;" lay-tips="{{$menu->display_name}}" lay-direction="2">
-                                <i class="layui-icon {{$menu->icon->class??''}}"></i>
-                                <cite>{{$menu->display_name}}</cite>
-                            </a>
+                            @if($menu->route)
+                                <a lay-href="{{route($menu->route)}}" lay-tips="{{$menu->display_name}}" lay-direction="2">
+                            @else
+                                <a href="javascript:;" lay-tips="{{$menu->display_name}}" lay-direction="2">
+                            @endif
+                                    <i class="layui-icon {{$menu->icon->class??''}}"></i>
+                                    <cite>{{$menu->display_name}}</cite>
+                                </a>
                             @if($menu->childs->isNotEmpty())
                             <dl class="layui-nav-child">
                                 @foreach($menu->childs as $subMenu)
