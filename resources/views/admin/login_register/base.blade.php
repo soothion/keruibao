@@ -5,7 +5,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>登入 - layuiAdmin</title>
+    <title>登入 - 科睿宝科技</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -19,8 +19,8 @@
 
     <div class="layadmin-user-login-main">
         <div class="layadmin-user-login-box layadmin-user-login-header">
-            <h2>layuiAdmin</h2>
-            <p>layui 官方出品的单页面后台管理模板系统</p>
+            <h2>科睿宝科技</h2>
+            <p>科睿宝科技后台管理系统</p>
         </div>
         @yield('content')
     </div>
