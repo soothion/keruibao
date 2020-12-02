@@ -26,6 +26,7 @@
                     <select name="type" id="type">
                         <option value="">请选择类别</option>
                         <option value="材料">材料</option>
+                        <option value="订货">订货</option>
                         <option value="办公">办公</option>
                         <option value="工资">工资</option>
                         <option value="货款">材料</option>

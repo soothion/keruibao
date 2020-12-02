@@ -182,6 +182,25 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
     
 });
 
+
+//销售管理
+Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['auth', 'permission:sale.manage']], function () {
+    //订单管理
+    Route::group(['middleware' => 'permission:sale.order'], function () {
+        Route::get('order/data', 'OrderController@data')->name('admin.order.data');
+        Route::get('order', 'OrderController@index')->name('admin.order');
+        //添加
+        Route::get('order/create', 'OrderController@create')->name('admin.order.create')->middleware('permission:sale.order.create');
+        Route::post('order/store', 'OrderController@store')->name('admin.order.store')->middleware('permission:sale.order.create');
+        //编辑
+        Route::get('order/{id}/edit', 'OrderController@edit')->name('admin.order.edit')->middleware('permission:sale.order.edit');
+        Route::put('order/{id}/update', 'OrderController@update')->name('admin.order.update')->middleware('permission:sale.order.edit');
+        //删除
+        Route::delete('order/destroy', 'OrderController@destroy')->name('admin.order.destroy')->middleware('permission:sale.order.destroy');
+    });
+    
+});
+
 //配置管理
 Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['auth', 'permission:config.manage']], function () {
     //站点配置

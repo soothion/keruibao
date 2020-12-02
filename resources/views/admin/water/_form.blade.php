@@ -19,6 +19,7 @@
         <select name="type" lay-verify="required">
             <option value="">请选择类别</option>
             <option value="材料" @if(isset($water->type)&&$water->type=='材料')selected @endif >材料</option>
+            <option value="订货" @if(isset($water->type)&&$water->type=='订货')selected @endif >订货</option>
             <option value="办公" @if(isset($water->type)&&$water->type=='办公')selected @endif >办公</option>
             <option value="工资" @if(isset($water->type)&&$water->type=='工资')selected @endif >工资</option>
             <option value="货款" @if(isset($water->type)&&$water->type=='货款')selected @endif >材料</option>
