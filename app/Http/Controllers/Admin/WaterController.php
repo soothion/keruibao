@@ -47,7 +47,7 @@ class WaterController extends Controller
         }
         $totalAmountModel = $model;
         $totalAmount = $totalAmountModel->sum('amount');
-        $res = $model->orderBy('created_at','desc')->with('product')->paginate($request->get('limit',30))->toArray();
+        $res = $model->orderBy('date','desc')->with('product')->paginate($request->get('limit',30))->toArray();
         $data = [
             'code' => 0,
             'msg'   => '正在请求中...',
