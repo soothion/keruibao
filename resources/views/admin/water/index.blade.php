@@ -99,7 +99,6 @@
                         ,{field: 'amount', title: '金额'}
                         ,{field: 'status', title: '状态'}
                         ,{field: 'description', title: '描述'}
-                        ,{field: 'created_at', title: '创建时间'}
                         ,{fixed: 'right', width: 220, align:'center', toolbar: '#options'}
                     ]]
                     , done: function (res, curr, count) {
