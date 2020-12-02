@@ -87,7 +87,7 @@
                     ,height: 700
                     ,url: "{{ route('admin.water.data') }}" //数据接口
                     ,page: true //开启分页
-                    ,limit：20
+                    ,limit: 20
                     , limits: [20, 50, 100, 150, 200,500]
                     , toolbar: '#toolbar'
                     ,cols: [[ //表头
