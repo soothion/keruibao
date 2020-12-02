@@ -27,10 +27,11 @@
                         <option value="">请选择类别</option>
                         <option value="材料">材料</option>
                         <option value="订货">订货</option>
+                        <option value="快递">快递</option>
                         <option value="办公">办公</option>
                         <option value="工资">工资</option>
                         <option value="货款">材料</option>
-                        <option value="提现">材料</option>
+                        <option value="提现">提现</option>
                         <option value="其他">其他</option>
                     </select>
                 </div>
@@ -86,6 +87,7 @@
                     ,height: 700
                     ,url: "{{ route('admin.water.data') }}" //数据接口
                     ,page: true //开启分页
+                    ,limit：20,
                     , limits: [20, 50, 100, 150, 200,500]
                     , toolbar: '#toolbar'
                     ,cols: [[ //表头
