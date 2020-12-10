@@ -5,20 +5,16 @@
         <div class="layui-card-header layuiadmin-card-header-auto">
             <div class="layui-btn-group ">
                 <button class="layui-btn layui-btn-sm layui-btn-danger" id="listDelete">删 除</button>
-                @can('finance.water.create')
-                    <a class="layui-btn layui-btn-sm" href="{{ route('admin.water.create') }}">添 加</a>
+                @can('finance.baoxiao.create')
+                    <a class="layui-btn layui-btn-sm" href="{{ route('admin.baoxiao.create') }}">添 加</a>
+                @endcan
+                @can('finance.baoxiao.edit')
+                    <a class="layui-btn layui-btn-sm" id="listCheck">批量报销</a>
                 @endcan
                 <button class="layui-btn layui-btn-sm" id="searchBtn">搜 索</button>
             </div>
 
             <div class="layui-form">
-                <div class="layui-input-inline">
-                    <select name="inout" id="inout">
-                        <option value="">请选择收入/支出</option>
-                        <option value="收入">收入</option>
-                        <option value="支出">支出</option>
-                    </select>
-                </div>
                  <div class="layui-input-inline">
                     <select name="type" id="type">
                         <option value="">请选择类别</option>
@@ -27,23 +23,18 @@
                         <option value="快递">快递</option>
                         <option value="办公">办公</option>
                         <option value="工资">工资</option>
-                        <option value="货款">材料</option>
-                        <option value="提现">提现</option>
                         <option value="其他">其他</option>
                     </select>
                 </div>
-
                 <div class="layui-input-inline">
-                    <select name="paytype" id="paytype">
-                        <option value="">请选择支付方式</option>
-                        <option value="银行卡">银行卡</option>
-                        <option value="支付宝">支付宝</option>
-                        <option value="未知">未知</option>
+                    <select name="status" id="status">
+                        <option value="">请选择状态</option>
+                        <option value="未报销">未报销</option>
+                        <option value="已报销">已报销</option>
                     </select>
                 </div>
-
                 <div class="layui-input-inline">
-                        <input type="text" name="batch_id" id="batch_id" placeholder="请输入生产批次号" class="layui-input">
+                        <input type="text" name="water_id" id="water_id" placeholder="请输入流水号" class="layui-input">
                 </div>
                 <div class="layui-inline">
                     <div class="layui-input-inline">
@@ -58,10 +49,10 @@
             <table id="dataTable" lay-filter="dataTable"></table>
             <script type="text/html" id="options">
                 <div class="layui-btn-group">
-                    @can('finance.water.edit')
+                    @can('finance.baoxiao.edit')
                         <a class="layui-btn layui-btn-sm" lay-event="edit">编辑</a>
                     @endcan
-                    @can('finance.water.destroy')
+                    @can('finance.baoxiao.destroy')
                         <a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del">删除</a>
                     @endcan
                 </div>
@@ -85,7 +76,7 @@
                 var dataTable = table.render({
                     elem: '#dataTable'
                     ,height: 700
-                    ,url: "{{ route('admin.water.data') }}" //数据接口
+                    ,url: "{{ route('admin.baoxiao.data') }}" //数据接口
                     ,page: true //开启分页
                     ,limit: 20
                     , limits: [20, 50, 100, 150, 200,500]
@@ -93,12 +84,12 @@
                     ,cols: [[ //表头
                         {checkbox: true,fixed: true}
                         ,{field: 'id', title: 'ID', sort: true,width:80}
-                        ,{field: 'inout', title: '收入/支出'}
                         ,{field: 'type', title: '类别'}
                         ,{field: 'date', title: '日期'}
                         ,{field: 'amount', title: '金额'}
-                        ,{field: 'paytype', title: '支付方式'}
+                        ,{field: 'status', title: '状态'}
                         ,{field: 'description', title: '描述'}
+                        ,{field: 'water_id', title: '报销流水号'}
                         ,{fixed: 'right', width: 220, align:'center', toolbar: '#options'}
                     ]]
                     , done: function (res, curr, count) {
@@ -112,7 +103,7 @@
                         ,layEvent = obj.event; //获得 lay-event 对应的值
                     if(layEvent === 'del'){
                         layer.confirm('确认删除吗？', function(index){
-                            $.post("{{ route('admin.water.destroy') }}",{_method:'delete',ids:[data.id]},function (result) {
+                            $.post("{{ route('admin.baoxiao.destroy') }}",{_method:'delete',ids:[data.id]},function (result) {
                                 if (result.code==0){
                                     obj.del(); //删除对应行（tr）的DOM结构
                                 }
@@ -121,7 +112,7 @@
                             });
                         });
                     } else if(layEvent === 'edit'){
-                        location.href = '/admin/water/'+data.id+'/edit';
+                        location.href = '/admin/baoxiao/'+data.id+'/edit';
                     }
                 });
 
@@ -158,7 +149,7 @@
                     }
                     if (ids.length>0){
                         layer.confirm('确认删除吗？', function(index){
-                            $.post("{{ route('admin.water.destroy') }}",{_method:'delete',ids:ids},function (result) {
+                            $.post("{{ route('admin.baoxiao.destroy') }}",{_method:'delete',ids:ids},function (result) {
                                 if (result.code==0){
                                     dataTable.reload()
                                 }
@@ -171,16 +162,40 @@
                     }
                 })
 
+                  //按钮批量删除
+                $("#listCheck").click(function () {
+                    var ids = []
+                    var hasCheck = table.checkStatus('dataTable')
+                    var hasCheckData = hasCheck.data
+                    if (hasCheckData.length>0){
+                        $.each(hasCheckData,function (index,element) {
+                            ids.push(element.id)
+                        })
+                    }
+                    if (ids.length>0){
+                        layer.confirm('确认批量报销吗？', function(index){
+                            $.post("{{ route('admin.baoxiao.check') }}",{_method:'put',ids:ids},function (result) {
+                                if (result.code==0){
+                                    dataTable.reload()
+                                }
+                                layer.close(index);
+                                layer.msg(result.msg+',对应流水号:'+result.waterId)
+                            });
+                        })
+                    }else {
+                        layer.msg('请选择报销项')
+                    }
+                })
+
                 //搜索
                 $("#searchBtn").click(function () {
                     var inout = $("#inout").val()
                     var type = $("#type").val();
                     var paytype = $("#paytype").val();
                     var status = $("#status").val();
-                    var batch_id = $("#batch_id").val();
                     var date = $("#date").val();
                     dataTable.reload({
-                        where:{inout:inout,type:type,paytype:paytype,status:status,batch_id:batch_id,date:date},
+                        where:{inout:inout,type:type,paytype:paytype,status:status,date:date},
                         page:{curr:1}
                     })
                 })

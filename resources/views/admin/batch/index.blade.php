@@ -39,6 +39,8 @@
                     ,height: 700
                     ,url: "{{ route('admin.batch.data') }}" //数据接口
                     ,page: true //开启分页
+                    ,limit: 20
+                    ,limits: [20, 50, 100, 150, 200,500]
                     ,cols: [[ //表头
                         {checkbox: true,fixed: true}
                         ,{field: 'id', title: 'ID', sort: true,width:80}

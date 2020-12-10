@@ -179,6 +179,23 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
         //入帐
         Route::put('water/check', 'WaterController@check')->name('admin.water.check')->middleware('permission:finance.water.edit');
     });
+
+
+    //报销管理
+    Route::group(['middleware' => 'permission:finance.baoxiao'], function () {
+        Route::get('baoxiao/data', 'BaoxiaoController@data')->name('admin.baoxiao.data');
+        Route::get('baoxiao', 'BaoxiaoController@index')->name('admin.baoxiao');
+        //添加
+        Route::get('baoxiao/create', 'BaoxiaoController@create')->name('admin.baoxiao.create')->middleware('permission:finance.baoxiao.create');
+        Route::post('baoxiao/store', 'BaoxiaoController@store')->name('admin.baoxiao.store')->middleware('permission:finance.baoxiao.create');
+        //编辑
+        Route::get('baoxiao/{id}/edit', 'BaoxiaoController@edit')->name('admin.baoxiao.edit')->middleware('permission:finance.baoxiao.edit');
+        Route::put('baoxiao/{id}/update', 'BaoxiaoController@update')->name('admin.baoxiao.update')->middleware('permission:finance.baoxiao.edit');
+        //删除
+        Route::delete('baoxiao/destroy', 'BaoxiaoController@destroy')->name('admin.baoxiao.destroy')->middleware('permission:finance.baoxiao.destroy');
+        //入帐
+        Route::put('baoxiao/check', 'BaoxiaoController@check')->name('admin.baoxiao.check')->middleware('permission:finance.baoxiao.edit');
+    });
     
 });
 

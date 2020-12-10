@@ -12,6 +12,18 @@
     </div>
 </div>
 
+<div class="layui-form-item">
+    <label for="" class="layui-form-label">支付方式</label>
+    <div class="layui-input-inline">
+        <select name="paytype" lay-verify="required">
+            <option value="">请选择支付方式</option>
+            <option value="银行卡" @if(isset($water->paytype)&&$water->paytype=='银行卡')selected @endif >银行卡</option>
+            <option value="支付宝" @if(isset($water->paytype)&&$water->paytype=='支付宝')selected @endif >支付宝</option>
+            <option value="未知" @if(isset($water->paytype)&&$water->paytype=='未知')selected @endif >未知</option>
+        </select>
+    </div>
+</div>
+
 
 <div class="layui-form-item">
     <label for="" class="layui-form-label">类别</label>
@@ -74,17 +86,6 @@
     </div>
 </div>
 
-
-<div class="layui-form-item">
-    <label for="" class="layui-form-label">状态</label>
-    <div class="layui-input-inline">
-        <select name="status">
-            <option value="">请选择状态</option>
-            <option value="初始化" @if(isset($water->status)&&$water->status=='初始化')selected @endif >初始化</option>
-            <option value="已入帐" @if(isset($water->status)&&$water->status=='已入帐')selected @endif >已入帐</option>
-        </select>
-    </div>
-</div>
 
 <div class="layui-form-item">
     <label for="" class="layui-form-label">描述</label>

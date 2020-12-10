@@ -39,10 +39,12 @@
                     ,height: 700
                     ,url: "{{ route('admin.checkout.data') }}" //数据接口
                     ,page: true //开启分页
+                    ,limit: 20
+                    ,limits: [20, 50, 100, 150, 200,500]
                     ,cols: [[ //表头
                         {checkbox: true,fixed: true}
                         ,{field: 'id', title: 'ID', sort: true,width:80}
-                        ,{field: 'product_id', title: '产品', templet: function (d) {
+                        ,{field: 'product_id',width:350, title: '产品', templet: function (d) {
                                 return d.product.name;
                             }}
                         ,{field: 'custom', title: '客户'}
@@ -50,8 +52,6 @@
                         ,{field: 'price', title: '单价'}
                         ,{field: 'amount', title: '总价'}
                         ,{field: 'date', title: '日期'}
-                        ,{field: 'description', title: '备注'}
-                        ,{field: 'created_at', title: '创建时间'}
                         ,{fixed: 'right', width: 220, align:'center', toolbar: '#options'}
                     ]]
                 });

@@ -39,15 +39,16 @@
                     ,height: 700
                     ,url: "{{ route('admin.product.data') }}" //数据接口
                     ,page: true //开启分页
+                    ,limit: 20
+                    ,limits: [20, 50, 100, 150, 200,500]
                     ,cols: [[ //表头
                         {checkbox: true,fixed: true}
                         ,{field: 'id', title: 'ID', sort: true,width:80}
+                        ,{field: 'sku', title: 'SKU'}
                         ,{field: 'name', title: '标题'}
                         ,{field: 'cost_price', title: '成本价'}
                         ,{field: 'sale_price', title: '销售价'}
                         ,{field: 'description', title: '描述'}
-                        ,{field: 'created_at', title: '创建时间'}
-                        ,{field: 'updated_at', title: '更新时间'}
                         ,{fixed: 'right', width: 220, align:'center', toolbar: '#options'}
                     ]]
                 });

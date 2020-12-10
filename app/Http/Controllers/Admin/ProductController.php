@@ -50,7 +50,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->only(['name','cost_price','sale_price','description']);
+        $data = $request->only(['name','cost_price','sku','sale_price','description']);
         $product = Product::create($data);
         return redirect(route('admin.product'))->with(['status'=>'添加成功']);
     }
@@ -91,7 +91,7 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     {
         $product = Product::findOrFail($id);
-        $data = $request->only(['name','cost_price','sale_price','description']);
+        $data = $request->only(['name','sku','cost_price','sale_price','description']);
         if ($product->update($data)){
             return redirect(route('admin.product'))->with(['status'=>'更新成功']);
         }

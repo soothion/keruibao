@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Water extends Model
+class Baoxiao extends Model
 {
-    protected $fillable = ['type','inout','batch_id', 'paytype','amount','date', 'description','image'];
+    protected $fillable = ['type','batch_id', 'water_id','amount','date', 'status', 'description','image'];
 
     public function product()
     {

@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Product;
+use App\Models\Baoxiao;
 use App\Models\Water;
 use App\Models\Batch;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class WaterController extends Controller
+class BaoxiaoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,29 +18,25 @@ class WaterController extends Controller
      */
     public function index()
     {
-        return view('admin.water.index');
+        return view('admin.baoxiao.index');
     }
 
     public function data(Request $request)
     {
         $param = $request->all();
-        $model = Water::query();
+        $model = Baoxiao::query();
         if (!empty($param['date'])) {
             list($param['start'], $param['end']) = explode(' - ', $param['date']);
             $model = $model->where('created_at', '>', $param['start']);
             $model = $model->where('created_at', '<=', $param['end']);
         }
 
-        if (!empty($param['paytype'])) {
-            $model = $model->where('paytype', $param['paytype']);
+        if (!empty($param['status'])) {
+            $model = $model->where('status', $param['status']);
         }
 
-        if (!empty($param['inout'])) {
-            $model = $model->where('inout', $param['inout']);
-        }
-
-        if (!empty($param['batch_id'])) {
-            $model = $model->where('batch_id', $param['batch_id']);
+        if (!empty($param['water_id'])) {
+            $model = $model->where('water_id', $param['water_id']);
         }
 
         if (!empty($param['type'])) {
@@ -67,7 +64,7 @@ class WaterController extends Controller
     {
         $products = Product::all();
         $batches = Batch::all();
-        return view('admin.water.create', compact('products', 'batches'));
+        return view('admin.baoxiao.create', compact('products', 'batches'));
     }
 
     /**
@@ -78,9 +75,9 @@ class WaterController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->only(['paytype','inout','type','batch_id','amount','date', 'description', 'image']);
-        $water = Water::create($data);
-        return redirect(route('admin.water'))->with(['status'=>'添加成功']);
+        $data = $request->only(['type','batch_id','amount','date', 'status', 'description', 'image']);
+        $baoxiao = Baoxiao::create($data);
+        return redirect(route('admin.baoxiao'))->with(['status'=>'添加成功']);
     }
 
     /**
@@ -101,13 +98,13 @@ class WaterController extends Controller
      */
     public function edit($id)
     {
-        $water = Water::findOrFail($id);
+        $baoxiao = Baoxiao::findOrFail($id);
         $products = Product::all();
         $batches = Batch::all();
-        if (!$water){
-            return redirect(route('admin.water'))->withErrors(['status'=>'产品不存在']);
+        if (!$baoxiao){
+            return redirect(route('admin.baoxiao'))->withErrors(['status'=>'产品不存在']);
         }
-        return view('admin.water.edit', compact('water', 'products', 'batches'));
+        return view('admin.baoxiao.edit', compact('baoxiao', 'products', 'batches'));
 
     }
 
@@ -120,12 +117,12 @@ class WaterController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $water = Water::findOrFail($id);
-        $data = $request->only(['paytype','inout','type','batch_id','amount','date', 'description', 'image']);
-        if ($water->update($data)){
-            return redirect(route('admin.water'))->with(['status'=>'更新成功']);
+        $baoxiao = Baoxiao::findOrFail($id);
+        $data = $request->only(['type','batch_id','amount','date', 'status', 'description', 'image']);
+        if ($baoxiao->update($data)){
+            return redirect(route('admin.baoxiao'))->with(['status'=>'更新成功']);
         }
-        return redirect(route('admin.water'))->withErrors(['status'=>'系统错误']);
+        return redirect(route('admin.baoxiao'))->withErrors(['status'=>'系统错误']);
     }
 
     /**
@@ -140,11 +137,37 @@ class WaterController extends Controller
         if (empty($ids)){
             return response()->json(['code'=>1,'msg'=>'请选择删除项']);
         }
-        foreach (Water::whereIn('id',$ids)->get() as $model){
+        foreach (Baoxiao::whereIn('id',$ids)->get() as $model){
             //删除产品
             $model->delete();
         }
         return response()->json(['code'=>0,'msg'=>'删除成功']);
+    }
+
+    public function check(Request $request)
+    {
+        $ids = $request->get('ids');
+        if (empty($ids)){
+            return response()->json(['code'=>1,'msg'=>'请选择操作项']);
+        }
+        $baoxiaos = Baoxiao::whereIn('id',$ids)->where(['status'=>'已报销'])->get();
+        if(count($baoxiaos)){
+            return response()->json(['code'=>1,'msg'=>'已报销项目不能重复报销']);
+        }
+        $totalAmount = Baoxiao::whereIn('id',$ids)->sum('amount');
+        $water = Water::create([
+            'inout'=>'支出',
+            'type'=>'其他',
+            'amount'=>$totalAmount,
+            'date'=>date('Y-m-d'),
+            'description'=>'报销单据:'.implode(',', $ids)
+        ]);
+        $waterId = $water->id;
+        Baoxiao::whereIn('id',$ids)->update([
+            'status'=>'已报销',
+            'water_id'=>$waterId
+        ]); 
+        return response()->json(['code'=>0,'msg'=>'报销成功','waterId'=>$waterId]);
     }
 
 }

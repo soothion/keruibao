@@ -8,6 +8,13 @@
 </div>
 
 <div class="layui-form-item">
+    <label for="" class="layui-form-label">SKU</label>
+    <div class="layui-input-block">
+        <input type="text" name="sku" value="{{$product->sku??old('sku')}}" lay-verify="required" placeholder="请输入SKU" class="layui-input" >
+    </div>
+</div>
+
+<div class="layui-form-item">
     <label for="" class="layui-form-label">成本价</label>
     <div class="layui-input-block">
         <input type="number"  name="cost_price" value="{{$product->cost_price??old('cost_price')}}" lay-verify="number required" placeholder="请输入成本价" class="layui-input" >
