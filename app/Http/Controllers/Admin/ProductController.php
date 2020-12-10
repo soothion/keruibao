@@ -22,7 +22,7 @@ class ProductController extends Controller
     {
 
         $model = Product::query();
-        $res = $model->orderBy('created_at','desc')->paginate($request->get('limit',30))->toArray();
+        $res = $model->orderBy('id','asc')->paginate($request->get('limit',30))->toArray();
         $data = [
             'code' => 0,
             'msg'   => '正在请求中...',
