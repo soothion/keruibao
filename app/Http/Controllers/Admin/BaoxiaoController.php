@@ -35,6 +35,10 @@ class BaoxiaoController extends Controller
             $model = $model->where('status', $param['status']);
         }
 
+        if (!empty($param['amount'])) {
+            $model = $model->where('amount', number_format($param['amount']), 2);
+        }
+
         if (!empty($param['water_id'])) {
             $model = $model->where('water_id', $param['water_id']);
         }

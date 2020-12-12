@@ -36,6 +36,9 @@
                 <div class="layui-input-inline">
                         <input type="text" name="water_id" id="water_id" placeholder="请输入流水号" class="layui-input">
                 </div>
+                <div class="layui-input-inline">
+                        <input type="text" name="amount" id="amount" placeholder="请输入金额" class="layui-input">
+                </div>
                 <div class="layui-inline">
                     <div class="layui-input-inline">
                         <input type="text" class="layui-input" id="date"  autocomplete="off" name="" placeholder="请选择日期范围"
@@ -190,12 +193,13 @@
                 //搜索
                 $("#searchBtn").click(function () {
                     var inout = $("#inout").val()
+                    var amount = $("#amount").val()
                     var type = $("#type").val();
                     var paytype = $("#paytype").val();
                     var status = $("#status").val();
                     var date = $("#date").val();
                     dataTable.reload({
-                        where:{inout:inout,type:type,paytype:paytype,status:status,date:date},
+                        where:{amount:amount,inout:inout,type:type,paytype:paytype,status:status,date:date},
                         page:{curr:1}
                     })
                 })
