@@ -127,7 +127,7 @@
 
                 laydate.render({
                     elem: '#date',
-                    type: 'datetime',
+                    type: 'date',
                     // value: '{{ date('Y-m-d 00:00:00').' - '.date('Y-m-d 23:59:59')}}',
                     range: true
                 });

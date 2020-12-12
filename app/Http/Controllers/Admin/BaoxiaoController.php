@@ -27,7 +27,7 @@ class BaoxiaoController extends Controller
         $model = Baoxiao::query();
         if (!empty($param['date'])) {
             list($param['start'], $param['end']) = explode(' - ', $param['date']);
-            $model = $model->where('created_at', '>', $param['start']);
+            $model = $model->where('created_at', '>=', $param['start']);
             $model = $model->where('created_at', '<=', $param['end']);
         }
 
@@ -36,7 +36,7 @@ class BaoxiaoController extends Controller
         }
 
         if (!empty($param['amount'])) {
-            $model = $model->where('amount', number_format($param['amount']), 2);
+            $model = $model->where('amount', number_format($param['amount'], 2));
         }
 
         if (!empty($param['water_id'])) {

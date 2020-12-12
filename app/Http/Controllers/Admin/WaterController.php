@@ -26,7 +26,7 @@ class WaterController extends Controller
         $model = Water::query();
         if (!empty($param['date'])) {
             list($param['start'], $param['end']) = explode(' - ', $param['date']);
-            $model = $model->where('created_at', '>', $param['start']);
+            $model = $model->where('created_at', '>=', $param['start']);
             $model = $model->where('created_at', '<=', $param['end']);
         }
 
