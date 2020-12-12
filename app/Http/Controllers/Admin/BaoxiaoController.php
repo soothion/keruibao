@@ -36,7 +36,7 @@ class BaoxiaoController extends Controller
         }
 
         if (!empty($param['amount'])) {
-            $model = $model->where('amount', number_format($param['amount'], 2));
+            $model = $model->where('amount', number_format($param['amount'], 2, '.', ''));
         }
 
         if (!empty($param['water_id'])) {
