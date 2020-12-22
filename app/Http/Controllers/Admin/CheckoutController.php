@@ -23,7 +23,7 @@ class CheckoutController extends Controller
     {
 
         $model = Checkout::query();
-        $res = $model->orderBy('date','desc')->with('product')->paginate($request->get('limit',30))->toArray();
+        $res = $model->orderBy('date','desc')->orderBy('id','desc')->with('product')->paginate($request->get('limit',30))->toArray();
         $data = [
             'code' => 0,
             'msg'   => '正在请求中...',
