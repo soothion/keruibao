@@ -57,6 +57,17 @@
 </div>
 
 <div class="layui-form-item">
+    <label for="" class="layui-form-label">状态</label>
+    <div class="layui-input-inline">
+        <select name="status" >
+            <option value="">请选择状态</option>
+            <option value="未出库" @if(isset($checkout->status)&&$checkout->status=='未出库')selected @endif >未出库</option>
+            <option value="已出库" @if(isset($checkout->status)&&$checkout->status=='已出库')selected @endif >已出库</option>
+        </select>
+    </div>
+</div>
+
+<div class="layui-form-item">
     <div class="layui-input-block">
         <button type="submit" class="layui-btn" lay-submit="" lay-filter="formDemo">确 认</button>
         <a  class="layui-btn" href="{{route('admin.checkout')}}" >返 回</a>

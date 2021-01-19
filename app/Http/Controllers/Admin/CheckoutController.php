@@ -16,11 +16,42 @@ class CheckoutController extends Controller
      */
     public function index()
     {
-        return view('admin.checkout.index');
+        $products = Product::all();
+        return view('admin.checkout.index', compact('products'));
     }
 
     public function data(Request $request)
     {
+
+        $param = $request->all();
+        $model = Checkout::query();
+        if (!empty($param['date'])) {
+            list($param['start'], $param['end']) = explode(' - ', $param['date']);
+            $model = $model->where('date', '>=', $param['start']);
+            $model = $model->where('date', '<=', $param['end']);
+        }
+
+        if (!empty($param['status'])) {
+            $model = $model->where('status', $param['status']);
+        }
+
+        if (!empty($param['product_id'])) {
+            $model = $model->where('product_id', $param['product_id']);
+        }
+
+        $totalAmountModel = $model;
+        $totalAmount = $totalAmountModel->sum('amount');
+        $res = $model->orderBy('date','desc')->orderBy('id','desc')->with('product')->paginate($request->get('limit',30))->toArray();
+        $data = [
+            'code' => 0,
+            'msg'   => '正在请求中...',
+            'count' => $res['total'],
+            'data'  => $res['data'],
+            'totalAmount'=>$totalAmount
+        ];
+        return response()->json($data);
+
+
 
         $model = Checkout::query();
         $res = $model->orderBy('date','desc')->orderBy('id','desc')->with('product')->paginate($request->get('limit',30))->toArray();
@@ -52,7 +83,7 @@ class CheckoutController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->only(['product_id','quantity','price', 'amount', 'date', 'custom', 'description']);
+        $data = $request->only(['product_id','quantity','status','price', 'amount', 'date', 'custom', 'description']);
         $checkout = Checkout::create($data);
         return redirect(route('admin.checkout'))->with(['status'=>'添加成功']);
     }
@@ -94,7 +125,7 @@ class CheckoutController extends Controller
     public function update(Request $request, $id)
     {
         $checkout = Checkout::findOrFail($id);
-        $data = $request->only('product_id','quantity','price', 'amount', 'date', 'custom', 'description');
+        $data = $request->only('product_id','quantity','price', 'status','amount', 'date', 'custom', 'description');
         if ($checkout->update($data)){
             return redirect(route('admin.checkout'))->with(['status'=>'更新成功']);
         }

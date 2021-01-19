@@ -34,9 +34,6 @@
                     </select>
                 </div>
                 <div class="layui-input-inline">
-                        <input type="text" name="water_id" id="water_id" placeholder="请输入流水号" class="layui-input">
-                </div>
-                <div class="layui-input-inline">
                         <input type="text" name="amount" id="amount" placeholder="请输入金额" class="layui-input">
                 </div>
                 <div class="layui-inline">

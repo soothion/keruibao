@@ -8,7 +8,36 @@
                 @can('produce.checkout.create')
                     <a class="layui-btn layui-btn-sm" href="{{ route('admin.checkout.create') }}">添 加</a>
                 @endcan
+                <button class="layui-btn layui-btn-sm" id="searchBtn">搜 索</button>
             </div>
+
+            <div class="layui-form">
+                
+                <div class="layui-input-inline">
+                    <select name="product_id" lay-verify="required" id="product_id">
+                        <option value="">请选择产品</option>
+                        @foreach($products as $product)
+                            <option value="{{$product->id}}" @if(isset($checkout->product_id)&&$checkout->product_id==$product->id)selected @endif >{{$product->id}} - {{$product->name}}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="layui-input-inline">
+                    <select name="status" id="status">
+                        <option value="">请选择状态</option>
+                        <option value="未出库">未出库</option>
+                        <option value="已出库">已出库</option>
+                    </select>
+                </div>
+
+                <div class="layui-inline">
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" id="date"  autocomplete="off" name="" placeholder="请选择日期范围"
+                               style="width:300px;">
+                    </div>
+                </div>
+            </div>
+
         </div>
         <div class="layui-card-body">
             <table id="dataTable" lay-filter="dataTable"></table>
@@ -28,11 +57,21 @@
 
 @section('script')
     @can('produce.manage')
+        <script type="text/html" id="toolbar">
+            <h5>总金额:<span id="totalAmount">0</span>元</h5>
+        </script>
         <script>
-            layui.use(['layer','table','form'],function () {
+            layui.use(['layer','table','form', 'laydate'],function () {
                 var layer = layui.layer;
                 var form = layui.form;
                 var table = layui.table;
+                var laydate = layui.laydate;
+
+                //执行一个laydate实例
+                laydate.render({
+                  elem: '#date', //指定元素
+                  range: true
+                });
                 //用户表格初始化
                 var dataTable = table.render({
                     elem: '#dataTable'
@@ -41,6 +80,7 @@
                     ,page: true //开启分页
                     ,limit: 20
                     ,limits: [20, 50, 100, 150, 200,500]
+                    ,toolbar: '#toolbar'
                     ,cols: [[ //表头
                         {checkbox: true,fixed: true}
                         ,{field: 'id', title: 'ID', sort: true,width:80}
@@ -51,9 +91,13 @@
                         ,{field: 'quantity', title: '数量'}
                         ,{field: 'price', title: '单价'}
                         ,{field: 'amount', title: '总价'}
+                        ,{field: 'status', title: '状态'}
                         ,{field: 'date', title: '日期'}
                         ,{fixed: 'right', width: 220, align:'center', toolbar: '#options'}
                     ]]
+                    , done: function (res, curr, count) {
+                        $('#totalAmount').html(res.totalAmount);
+                    }
                 });
 
                 //监听工具条
@@ -116,10 +160,11 @@
 
                 //搜索
                 $("#searchBtn").click(function () {
-                    var catId = $("#category_id").val()
-                    var title = $("#title").val();
+                    var product_id = $("#product_id").val()
+                    var status = $("#status").val();
+                    var date = $("#date").val();
                     dataTable.reload({
-                        where:{category_id:catId,title:title},
+                        where:{product_id:product_id,status:status,date:date},
                         page:{curr:1}
                     })
                 })
