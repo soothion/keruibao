@@ -37,9 +37,26 @@
     }
 </style>
 <script>
-    layui.use(['upload', 'laydate'],function () {
+    layui.use(['upload', 'laydate', 'form'],function () {
         var upload = layui.upload
         var laydate = layui.laydate;
+        var form= layui.form;
+
+        form.on('select(product_id)', function(data){   
+            var sale_price = data.elem[data.elem.selectedIndex].getAttribute('sale_price');
+            $("input[name='price']").val(sale_price);
+         });
+
+        $(function(){
+            //输入框的值改变时触发
+            $("input[name='quantity']").on("input",function(e){
+                //获取input输入的值
+                var quantity = e.delegateTarget.value;
+                var price = $("input[name='price']").val();
+                var amount = price*quantity;
+                $("input[name='amount']").val(amount);
+            });
+        });
   
         //执行一个laydate实例
         laydate.render({
