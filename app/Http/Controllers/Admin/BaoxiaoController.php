@@ -27,8 +27,8 @@ class BaoxiaoController extends Controller
         $model = Baoxiao::query();
         if (!empty($param['date'])) {
             list($param['start'], $param['end']) = explode(' - ', $param['date']);
-            $model = $model->where('created_at', '>=', $param['start']);
-            $model = $model->where('created_at', '<=', $param['end']);
+            $model = $model->where('date', '>=', $param['start']);
+            $model = $model->where('date', '<=', $param['end']);
         }
 
         if (!empty($param['status'])) {
